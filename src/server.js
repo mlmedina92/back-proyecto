@@ -1,7 +1,7 @@
 import express from 'express'
 import { __dirname } from './utils.js'
 import handlebars from 'express-handlebars'
-import cartRouter from './routes/cart.router.js'
+import cartsRouter from './routes/carts.router.js'
 import producstRouter from './routes/products.router.js'
 
 
@@ -21,7 +21,7 @@ app.set('view engine', 'handlebars') //cual motor de plantilla uso
 // rutas
 
 app.use('/api/products',producstRouter)
-app.use('/api/cart',cartRouter)
+app.use('/api/carts',cartsRouter)
 
 
 

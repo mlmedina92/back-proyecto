@@ -10,8 +10,9 @@ export default class ProductManager {
 
     }
     async saveFile() {
-        //Guardo o sobreescribo el archivo
+        //Guardo o sobreescribo el archivo q guarda los productos
         await fs.promises.writeFile(this.path, JSON.stringify(this.products))
+        console.log(this.path, ' guardado con exito')
     }
 
     async readFile() {
@@ -24,7 +25,7 @@ export default class ProductManager {
 
             const data = await fs.promises.readFile(this.path, 'utf-8')
             this.products = JSON.parse(data) //la data que trae la prom la guardo en mi obj 
-            console.log('info adhicionada con exito')
+            console.log(this.path,' leido con exito')
             return this.products
         } catch (error) {
             console.log('Error: ', error)
@@ -42,16 +43,16 @@ export default class ProductManager {
 
         await this.getProducts() // leo todos los prods del archivo y lo guardo en this.products
 
-        // validar que el producto no exista
+        // validar que el producto no exista en el array de productos
         const found = this.products.find((product) => product.code == code);
         if (found) {
             console.log("El producto ya existe");
             return false;//para cortar la ejecucion
         }
 
-        // si todos los param tiene valor y el prod no existe, lo agrega
-        const id = this.products.length;
-        this.products.push({
+        // si  tiene todos los param, tiene valor y el prod no existe, lo agrega
+        const id = this.products.length;// definir el id del producto
+        this.products.push({ //al array products le pushea el objeto con los valores que te llegan por params
             'id': id,
             'title': title,
             'description': description,
@@ -63,7 +64,7 @@ export default class ProductManager {
             'thumbnails': thumbnails
         });
 
-        await this.saveFile() //actualizo el archivo
+        await this.saveFile() //actualizo el archivo con el nuevo producto cargado
 
         console.log('Producto agregado');
         return true;
@@ -71,7 +72,7 @@ export default class ProductManager {
 
     // consultar todos 
     async getProducts(query) {
-        const prods = await this.readFile();
+        const prods = await this.readFile();// si funciono nos da un array de obj productos
         if (query) {
             const { limit } = query
             if (limit) {
@@ -83,13 +84,13 @@ export default class ProductManager {
 
     // consultar uno
     async getProductById(id) {
-        const prods = await this.getProducts()
+        const prods = await this.getProducts() // nos trae array de objetos productos
         if (!prods) {
             return false
         }
-        const found = prods.find((product) => product.id == id)
+        const found = prods.find((product) => product.id === id)
         if (found) {
-            return found;
+            return found; //retorna el objeto enocntrado
         }
         console.log('Producto no encontrado')
         return false;
@@ -101,14 +102,14 @@ export default class ProductManager {
         // prodToUpdate = {id, data:{ title, description, code, price, status, stock, category, thumbnails }}
         const { title, description, code, price, status, stock, category, thumbnails } = prodToUpdate.data;
 
-        //valido si existe el producto
+        //valido si existe el producto en el arreglo 
         const found = this.products.find((product) => product.id == prodToUpdate.id)
 
         if (!found) { //si no existe
             return false;
         }
 
-        //validar que los campos no esten vacios
+        //si existe el prod ,valido que los campos no esten vacios
         if (!title || !description || !code || !price || status === undefined || (!stock && stock<0) || !category || !thumbnails) {
             console.log('Todos los parametros son obligatorios')
             return false;
