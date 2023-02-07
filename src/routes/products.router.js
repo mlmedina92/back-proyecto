@@ -1,14 +1,10 @@
 import { Router } from "express";//para crear rutas fuera de server
 import ProductManager from "../ProductManager.js";
+import socketServer from '../server.js'
+
 const path = './files/products.json' // archivo donde se guardan los prod
 
-
 const router = Router()
-
-// router.get('/',(req,res)=>{
-//     res.render('products')
-// })
-
 
 // Instancio la clase:
 const pm = new ProductManager(path)// creamos un obj con una prop path y un arreglo vacio le paso la RUTA con la que vamos a trabajar (PATH)
@@ -18,7 +14,7 @@ const pm = new ProductManager(path)// creamos un obj con una prop path y un arre
 router.get('/', async (req, res) => {//aca te llega inf por QUERY
     const prods = await pm.getProducts(req.query)//lo que este desp del ? es query. se pueden concatenar con & . http://localhost:8080/products?limit=2
     res.json({ prods })// te envia la rta con los productos dentro de un objeto 
-    // res.render('products')
+    // res.render('products')- es la rta del servidor en formato json. es para dar rta al cliente
 })
 
 
@@ -33,9 +29,10 @@ router.get('/:idProduct', async (req, res) => {
 router.post('/', async (req, res) => {
     const resp = pm.addProduct(req.body)//hago lo mismo en un paso. la inf la pasamos por body
     if (resp) {
-        res.status(200).json({ message: 'Prod agregado con exito', prod: req.body })//message y prod son props del objeto
-    }else{
-        // error
+        res.status(200).json({ message: `Producto ${req.body.title} agregado con exito` })//message y prod son props del objeto
+        socketServer.emit('product-added', `Producto ${req.body.title} agregado con exito`)
+    } else {
+        console.log('error');
     }
 })
 /* ejemplo de body para llamar al post
@@ -52,11 +49,11 @@ router.post('/', async (req, res) => {
 
 // ruta para actualizar un produto
 router.put('/', async (req, res) => {
-    const resp = pm.updateProductById(req.body)//
+    const resp = pm.updateProductById(req.body)
     if (resp) {
         res.status(200).json({ message: 'Prod actualizado con exito', prod: req.body })
-    }else{
-        // error
+    } else {
+        console.log('error');
     }
 })
 /* ejemplo de body para llamar al put
@@ -75,13 +72,14 @@ router.put('/', async (req, res) => {
 }
 */
 
-// ruta para elimiar produto
+// ruta para eliminar produto
 router.delete('/', async (req, res) => {
-    const resp = pm.removeProductById(req.body.id)//hago lo mismo en un paso
+    const resp = pm.removeProductById(req.body.id)//paso el id  por BODY
     if (resp) {
         res.status(200).json({ message: 'Prod eliminado con exito', prod: req.body })
-    }else{
-        // error
+        socketServer.emit('product-removed', `Producto ${req.body.id} eliminado con exito`)
+    } else {
+        console.log('error');
     }
 })
 /* ejemplo de body para llamar al delete

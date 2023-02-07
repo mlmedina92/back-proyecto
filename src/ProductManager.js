@@ -11,21 +11,21 @@ export default class ProductManager {
     }
     async saveFile() {
         //Guardo o sobreescribo el archivo q guarda los productos
-        await fs.promises.writeFile(this.path, JSON.stringify(this.products))
+        await fs.promises.writeFile(this.path, JSON.stringify(this.products, null, 2), 'utf-8')
         console.log(this.path, ' guardado con exito')
     }
 
     async readFile() {
         // Leer la inf del archivo 
         try {
-            if (!fs.existsSync(this.path)) {
+            if (!fs.existsSync(this.path)) {//si es diferente a que exista
                 console.log('Error: archivo no encontrado', this.path);
                 return false;
             }
 
             const data = await fs.promises.readFile(this.path, 'utf-8')
             this.products = JSON.parse(data) //la data que trae la prom la guardo en mi obj 
-            console.log(this.path,' leido con exito')
+            console.log(this.path, ' leido con exito')
             return this.products
         } catch (error) {
             console.log('Error: ', error)
@@ -34,9 +34,10 @@ export default class ProductManager {
         return false;
     }
 
-    async addProduct({ title, description, code, price, status = true, stock, category, thumbnails }) {
-        // validar que todos los campos existan
-        if (!title || !description || !code || !price || !stock || !category || !thumbnails) {
+    async addProduct({ title, description, code, price, status = true, stock, category, thumbnails }) {//le llega un obj c esas props
+        // validar que todos los campos existan 
+
+        if (!title || !description || !code || !price || !stock || !category) {
             console.log('Todos los parametros son obligatorios')
             return false;
         }
@@ -44,10 +45,10 @@ export default class ProductManager {
         await this.getProducts() // leo todos los prods del archivo y lo guardo en this.products
 
         // validar que el producto no exista en el array de productos
-        const found = this.products.find((product) => product.code == code);
+        const found = this.products.find((product) => product.code == code);//si existe se corta
         if (found) {
             console.log("El producto ya existe");
-            return false;//para cortar la ejecucion
+            return false;
         }
 
         // si  tiene todos los param, tiene valor y el prod no existe, lo agrega
@@ -100,22 +101,22 @@ export default class ProductManager {
         await this.getProducts() // leo todos los prods del archivo y lo guardo en this.products
 
         // prodToUpdate = {id, data:{ title, description, code, price, status, stock, category, thumbnails }}
-        const { title, description, code, price, status, stock, category, thumbnails } = prodToUpdate.data;
+        const { title, description, code, price, status, stock, category, thumbnails } = prodToUpdate.data; //data es una prop de prodToUpdate
 
         //valido si existe el producto en el arreglo 
-        const found = this.products.find((product) => product.id == prodToUpdate.id)
+        const found = this.products.find((product) => product.id == prodToUpdate.id) //id es la primer prop de prodToUpdate esto me tare solo UN OBJETO
 
         if (!found) { //si no existe
             return false;
         }
 
         //si existe el prod ,valido que los campos no esten vacios
-        if (!title || !description || !code || !price || status === undefined || (!stock && stock<0) || !category || !thumbnails) {
+        if (!title || !description || !code || !price || status === undefined || (!stock && stock < 0) || !category || !thumbnails) {
             console.log('Todos los parametros son obligatorios')
             return false;
         }
 
-        //Actualizar el producto en el arreglo
+        //Actualizar EL producto en el arreglo que encontrooc find
         found.title = title;
         found.description = description;
         found.code = code;
@@ -125,7 +126,7 @@ export default class ProductManager {
         found.category = category;
         found.thumbnails = thumbnails;
 
-        await this.saveFile() //actualizo el archivo
+        await this.saveFile() //actualizo el archivo BD
         console.log('Producto actualizado')
         return true;
     }
@@ -133,7 +134,7 @@ export default class ProductManager {
     async removeProductById(id) {
         await this.getProducts() // leo todos los prods del archivo y lo guardo en this.products
 
-        //valido si existe el producto
+        //valido si existe el producto. 
         const found = this.products.find((product) => product.id == id)
         if (!found) { //si no existe
             return false;

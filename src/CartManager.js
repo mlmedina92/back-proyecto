@@ -8,7 +8,7 @@ export default class CartManager {
 
     async saveFile() {
         //Guardo o sobreescribo el archivo
-        await fs.promises.writeFile(this.path, JSON.stringify(this.carts))
+        await fs.promises.writeFile(this.path, JSON.stringify(this.carts, null, 2), 'utf-8')
         console.log(this.path, ' guardado con exito')
     }
 
@@ -32,14 +32,15 @@ export default class CartManager {
     }
 
     async createCart() {
-        await this.readFile()
+        // api/carts
+        await this.readFile() //retorna el arreglo de prods
 
         const newCart = {
             "id": this.carts.length,
             "products": []
         }
 
-        this.carts.push(newCart)
+        this.carts.push(newCart)//carts es el arreglo de carritos
 
         this.saveFile()
 
@@ -47,21 +48,21 @@ export default class CartManager {
     }
 
     async getCartById(id) {
+        // api/cart/1
         await this.readFile()
 
         const cart = this.carts.find((cart) => cart.id === id)
 
-        if (!cart) {
+        if (!cart) {//si no lo encuentra
             console.log('el carrito ' + id + ' no se encontró')
             return false
         }
 
         return cart
-
     }
 
     async addToCart(cid, pid, quantity) {
-        const cart = await this.getCartById(cid)
+        const cart = await this.getCartById(cid) //trae un solo carrito [{},{}]
 
         if (!cart) {
             return false
@@ -69,9 +70,9 @@ export default class CartManager {
 
         const prodInCart = cart.products.find((prodInCart) => prodInCart.productId === pid)
 
-        if (prodInCart) {
+        if (prodInCart) {//si existe el producto
             prodInCart.quantity += quantity
-        } else {
+        } else {//si no lo agrega
             cart.products.push({
                 "productId": pid,
                 "quantity": quantity
@@ -83,5 +84,4 @@ export default class CartManager {
         console.log('Carrito actualizado con éxito');
         return cart
     }
-
 }

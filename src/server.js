@@ -3,6 +3,9 @@ import { __dirname } from './utils.js'
 import handlebars from 'express-handlebars'
 import cartsRouter from './routes/carts.router.js'
 import producstRouter from './routes/products.router.js'
+import homeRouter from './routes/home.router.js'
+import realTimeProductsRouter from './routes/realTimeProducts.router.js'
+import { Server } from 'socket.io'
 
 
 const app = express()
@@ -23,12 +26,13 @@ app.set('view engine', 'handlebars') //cual motor de plantilla uso
 app.use('/api/products',producstRouter)
 app.use('/api/carts',cartsRouter)
 
+app.use('/',homeRouter)
+app.use('/realTimeProducts',realTimeProductsRouter)
 
 
 
-
-
-
-app.listen(8080, () => {
+const httpServer = app.listen(8080, () => {
     console.log('Escuchando al puerto 8080');
 })
+const socketServer = new Server(httpServer)
+export default socketServer
