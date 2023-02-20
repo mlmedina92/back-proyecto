@@ -8,7 +8,11 @@ import realTimeProductsRouter from './routes/realTimeProducts.router.js'
 import { Server } from 'socket.io'
 
 
+// import DBConfig:
+
 const app = express()
+const PORT = 3000;
+
 console.log(__dirname);//me brinda el path exacto p acceder a carpeta PUBLIC
 
 app.use(express.json())
@@ -31,8 +35,8 @@ app.use('/realTimeProducts',realTimeProductsRouter)
 
 
 
-const httpServer = app.listen(8080, () => {
-    console.log('Escuchando al puerto 8080');
+const httpServer = app.listen(PORT, () => {
+    console.log(`Escuchando al puerto ${PORT}`);
 })
 const socketServer = new Server(httpServer)
 export default socketServer

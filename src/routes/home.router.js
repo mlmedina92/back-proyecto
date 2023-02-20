@@ -1,6 +1,6 @@
 // archivo para el renderizzado de VISTAS
 import { Router } from "express"; //importo router
-import ProductManager from "../ProductManager.js";
+import ProductManager from "../dao/fileManagers/ProductManager.js";
 
 const path = './files/products.json' // archivo donde se guardan los prod
 

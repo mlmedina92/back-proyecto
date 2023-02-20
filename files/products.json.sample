@@ -9,8 +9,8 @@
         "stock": 8,
         "category": "productos1",
         "thumbnails": [
-            "imagen1.png",
-            "imagen2.png"
+            "https://definicion.de/wp-content/uploads/2009/06/producto.png",
+            "https://definicion.de/wp-content/uploads/2009/06/producto.png"
         ]
     },
     {
@@ -23,8 +23,8 @@
         "stock": 8,
         "category": "productos1",
         "thumbnails": [
-            "imagen1.png",
-            "imagen2.png"
+            "https://definicion.de/wp-content/uploads/2009/06/producto.png",
+            "https://definicion.de/wp-content/uploads/2009/06/producto.png"
         ]
     },
     {
@@ -37,8 +37,8 @@
         "stock": 8,
         "category": "productos1",
         "thumbnails": [
-            "imagen1.png",
-            "imagen2.png"
+            "https://definicion.de/wp-content/uploads/2009/06/producto.png",
+            "https://definicion.de/wp-content/uploads/2009/06/producto.png"
         ]
     },
     {
@@ -51,8 +51,8 @@
         "stock": 8,
         "category": "productos2",
         "thumbnails": [
-            "imagen1.png",
-            "imagen2.png"
+            "https://definicion.de/wp-content/uploads/2009/06/producto.png",
+            "https://definicion.de/wp-content/uploads/2009/06/producto.png"
         ]
     },
     {
@@ -65,8 +65,8 @@
         "stock": 8,
         "category": "productos2",
         "thumbnails": [
-            "imagen1.png",
-            "imagen2.png"
+            "https://definicion.de/wp-content/uploads/2009/06/producto.png",
+            "https://definicion.de/wp-content/uploads/2009/06/producto.png"
         ]
     }
 ]

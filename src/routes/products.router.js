@@ -1,5 +1,5 @@
 import { Router } from "express";//para crear rutas fuera de server
-import ProductManager from "../ProductManager.js";
+import ProductManager from "../dao/fileManagers/ProductManager.js";
 import socketServer from '../server.js'
 
 const path = './files/products.json' // archivo donde se guardan los prod
@@ -14,7 +14,6 @@ const pm = new ProductManager(path)// creamos un obj con una prop path y un arre
 router.get('/', async (req, res) => {//aca te llega inf por QUERY
     const prods = await pm.getProducts(req.query)//lo que este desp del ? es query. se pueden concatenar con & . http://localhost:8080/products?limit=2
     res.json({ prods })// te envia la rta con los productos dentro de un objeto 
-    // res.render('products')- es la rta del servidor en formato json. es para dar rta al cliente
 })
 
 

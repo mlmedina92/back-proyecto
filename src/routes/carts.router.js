@@ -1,12 +1,9 @@
 import { Router } from "express";
-import CartManager from "../CartManager.js";
+import CartManager from "../dao/fileManagers/CartManager.js";
 const path = './files/carts.json'
 
 const router = Router()
 
-// router.get('/',(req,res)=>{
-//     res.render('cart')
-// })
 
 const cm = new CartManager(path) //creo un objeto
 
