@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
 
 const messagesSchema = new mongoose.Schema({
-    name: {
+    user: {
         type: String,
-        required: true
+        required: true,
     },
-    description: {
+    message: {
         type: String,
         required: true
     }
 })
 
-export const messagesModel = mongoose.model('Carts', messagesModel)
+export const messagesModel = mongoose.model('Messages', messagesSchema)
